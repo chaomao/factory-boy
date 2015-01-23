@@ -1,6 +1,6 @@
 class User
-	attr_reader :name, :gender
+	attr_reader :name, :gender, :cellphone
 	def initialize(hash)
-		@name, @gender = hash[:name], hash[:gender]
+		@name, @gender, @cellphone= hash[:name], hash[:gender], hash[:cellphone]
 	end
 end
