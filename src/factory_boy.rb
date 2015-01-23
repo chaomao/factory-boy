@@ -15,6 +15,10 @@ class FactoryBoy
 	def factory(name, &block)
 		@models[name] = Model.new(name, self) unless @models.key?(name)
 		@models[name].instance_eval(&block) if block_given?
+		@models[name]
+	end
+	def factory?(name)
+		@models.key?(name)
 	end
 	def sequence(name, value, &block)
 		@sequences[name] = {init: value, block: block, count: 0}
@@ -37,6 +41,10 @@ class Model
 		Object.const_get(@name.capitalize).new(values)
 	end
 	def method_missing(name, *params, &block)
-		@params[name.to_sym] = block_given? ? block : params.first
+		if block_given?
+			@params[name.to_sym] = block
+		else
+			@params[name.to_sym] = @factory.factory?(name) ? @factory.factory(name).create : params.first
+		end
 	end
 end
