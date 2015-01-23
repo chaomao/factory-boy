@@ -1,23 +1,20 @@
 class FactoryBoy
 	def self.define(name = nil, &block)
-		@factory = Factory.new unless @factory
+		@factory = FactoryBoy.new unless @factory
 		@factory.instance_eval(&block) if block_given?
 	end
+	
 	def self.create(name)
-		@factory.create(name)
+		@factory.instance_exec{@models}[name].create
 	end
-end
 
-class Factory
 	def initialize
 		@models = {}
 	end
+
 	def factory(name, &block)
 		@models[name] = Model.new(name) unless @models.key?(name)
 		@models[name].instance_eval(&block) if block_given?
-	end
-	def create(name)
-		@models[name].create
 	end
 end
 
