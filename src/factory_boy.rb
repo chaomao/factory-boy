@@ -10,14 +10,14 @@ end
 
 class Factory
 	def initialize
-		@defines = {}
+		@models = {}
 	end
 	def factory(name, &block)
-		@defines[name] = Model.new(name) unless @defines.key?(name)
-		@defines[name].instance_eval(&block) if block_given?
+		@models[name] = Model.new(name) unless @models.key?(name)
+		@models[name].instance_eval(&block) if block_given?
 	end
 	def create(name)
-		@defines[name].create
+		@models[name].create
 	end
 end
 
