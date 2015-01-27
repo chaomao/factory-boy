@@ -36,6 +36,10 @@ describe FactoryBoy do
 			expect(FactoryBoy.create(:user).cellphone).to eq(100)
 			expect(FactoryBoy.create(:user).cellphone).to eq(101)
 		end
+
+		it	'should replace default value' do
+			expect(FactoryBoy.create(:user, name: 'jie ge').name).to eq('jie ge')
+		end
 	end
 
 	context 'admin' do

@@ -3,8 +3,8 @@ class FactoryBoy
 		@factory = FactoryBoy.new unless @factory
 		@factory.instance_eval(&block) if block_given?
 	end
-	def self.create(name)
-		@factory.instance_exec{@models}[name].create
+	def self.create(name, options = {})
+		@factory.instance_exec{@models}[name].create(options)
 	end
 	def self.clean_sequence
 		@factory.instance_exec{@sequences}.each {|name, hash| hash[:count] = 0}
@@ -33,8 +33,8 @@ class Model
 	def initialize(name, factory)
 		@name, @params, @factory = name, {}, factory
 	end
-	def create
-		values = @params.inject({}) do |memo, (key, value)|
+	def create(options = {})
+		values = @params.merge(options).inject({}) do |memo, (key, value)|
 			memo[key] = value.is_a?(Proc) ? @factory.instance_eval(&value) : value
 			memo
 		end
